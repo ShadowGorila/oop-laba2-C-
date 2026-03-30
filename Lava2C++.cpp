@@ -1,114 +1,71 @@
 #include <iostream>
 #include <string>
- 
-class Pivo {
-protected:
-    std::string name;
-private:    
-    double alcoholContent;
+
+class Label 
+{
 public:
-    Pivo(std::string name, double alcoholContent)
-    {
-        this -> name = name;
-        this -> alcoholContent = alcoholContent;
-        std::cout << "Pivo " << name << std::endl;
+    std::string brand;
+    Label() {
+        brand = "Unknown";
+        std::cout << "Label created" << std::endl;
     }
 
-    ~Pivo()
-    {
-        std::cout << "Pivo " << name << " destroyed" << std::endl;
+    Label(std::string brand) {
+        this -> brand = brand;
+        std::cout << "Label created: " << brand << std::endl; 
     }
-
-    Pivo() {
-        name = "Unknown";
-        alcoholContent = 0.0;
-        std::cout << "Default Pivo created" << std::endl;
-    }
-
-    Pivo(const Pivo& other){
-        name = other.name;
-        alcoholContent = other.alcoholContent;
-        std::cout << "Pivo " << name << " copied" << std::endl;
-    }
-
-    void print()
-    {
-        std::cout << "Pivo: " << name 
-        << ", Alchol Content: " << alcoholContent << "%" << std::endl;
-    }
-
-    std::string getName() {
-        return name;
-    }
-    double getAlcohol() {
-        return alcoholContent;
-    }
-
-    void setName(std::string newName) {
-        name = newName;
-    }
-    
-    void setAlcohol(double newAlcohol) {
-        alcoholContent = newAlcohol;
+    ~Label(){
+        std::cout << "Label destroyed: " << brand << std::endl;
     }
 };
 
-class Manufacturer : public Pivo {
+class Bottle {
 private:
-    std::string country;
+    std::string size;
+    Label label;  // ← объект
 public:
-    // Создан без параметров. 
-    Manufacturer() : Pivo () {
-        country = "Unknown";
-        std::cout << "Default Manufacturer created" << std::endl;
+    Bottle(std::string size, std::string brand) : label(brand) {
+        this->size = size;
+        std::cout << "Bottle created: " << size << std::endl;
+    }
+    ~Bottle() {
+        std::cout << "Bottle destroyed: " << size << std::endl;
+    }
+    void print() {
+        std::cout << "Bottle size: " << size << ", Brand: " << label.brand << std::endl;
+    }
+};
+
+class BottlePtr
+{
+private:
+    std::string size;
+    Label *label;
+public:
+    BottlePtr(std::string size, std::string brand) {
+        this -> size = size;
+        label = new Label(brand);
+        std::cout << "Bottle created:" << size << std::endl;
+        
     }
 
-    // Создан с параметрами.
-    Manufacturer(std::string name, double alcoholContent,std::string country) : Pivo(name, alcoholContent) 
-    {
-        this -> country = country;
-        std::cout << "Manufacturer " << name << " from " << country << std::endl;
-    }
-    
-    // Конструктор копирования.
-    Manufacturer(const Manufacturer& other) : Pivo(other) {
-        country = other.country;
-        std::cout << "Manufacturer " << getName() << " copied" << std::endl;
+    ~BottlePtr(){
+        std::cout << "Bottle destroyed:" << size << std::endl;
+        delete label;
     }
 
-    // Диструктор.
-    ~Manufacturer() {
-        std:: cout << "Manufacturer" << country << " destroyed" << std::endl;
-    }
+    void print() {
+        std::cout << "Bottle size: " << size << ", Brand: " << label -> brand << std::endl;
+     }
 
-    void printManufacturer() {
-        std::cout << "Manufacturer: " << getName()
-        << ", Alchol: " << getAlcohol() << "%"
-        << ", Country: " << country << std::endl;
-    }
-    void testAccess() {
-        std::cout << name << std::endl;
-        std::cout << getAlcohol() << std::endl;
-    }
-    
 };
 
 int main() {
-    Manufacturer m1;
-    Manufacturer m2("Bavaria", 5.0, "Germany");
-    Manufacturer m3(m2);
-    m1.printManufacturer();
-    m2.printManufacturer();
-    m3.printManufacturer();
-    std::cout << "------------------------------" << std::endl;
-    m2.testAccess();
-    std::cout << "------------------------------" << std::endl; 
-   Pivo pivo1;
-   Pivo pivo2("Bavaria", 7.9);
-   Pivo pivo3(pivo2);
-    pivo1.print();
-    pivo2.print();
-    pivo3.print();
-
+    std::cout << "---Object inside an object---" << std::endl;
+    Bottle b("0.5L", "Bavaria");
+    b.print(); 
+    std::cout <<"---Pointer inside an object---" << std::endl;
+    BottlePtr bp("1.0L", "Heineken");
+    bp.print();
     return 0;
 }
