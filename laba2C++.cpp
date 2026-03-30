@@ -109,6 +109,13 @@ int main() {
     pivo1.print();
     pivo2.print();
     pivo3.print();
-
+    std::cout << "--------Dynamic Creation-------" << std::endl;
+    Pivo *p1 = new Pivo("Heineken", 5.0);
+    Pivo *p2 = new Manufacturer("Hoegaarden", 4.9, "Belgium");
+    p1->print();
+    p2->print();
+    // удаление врунчную
+    delete p1;
+    delete p2;
     return 0;
 }
