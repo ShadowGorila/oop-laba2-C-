@@ -78,7 +78,7 @@ public:
 
     // Диструктор.
     ~Manufacturer() {
-        std:: cout << "Manufacturer" << country << " destroyed" << std::endl;
+        std::cout << "Manufacturer " << country << " destroyed" << std::endl;;
     }
 
     void printManufacturer() {
@@ -89,6 +89,12 @@ public:
     void testAccess() {
         std::cout << name << std::endl;
         std::cout << getAlcohol() << std::endl;
+    }
+
+    void print() {
+        Pivo::print();
+        std::cout << "country:" << country << std::endl;
+
     }
     
 };
@@ -117,5 +123,12 @@ int main() {
     // удаление врунчную
     delete p1;
     delete p2;
+    std::cout << "---Переопределение метода---" << std::endl;
+    Pivo *p = new Manufacturer("Kozel", 4.5, "Chech Republic");
+    p -> print();
+    Manufacturer *m = new Manufacturer("Kralovsky", 5.0, "Chechoslovakia");
+    m -> print();
+    delete p;
+    delete m;
     return 0;
 }
